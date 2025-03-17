@@ -1,0 +1,13 @@
+{% extends 'wildlenswebui/base.html' %}
+
+{% block content %}
+<div class="home-container">
+    <h2>Bienvenue sur WILDLENS</h2>
+    <p>Découvrez les animaux sauvages en scannant leurs empreintes.</p>
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'scan_track' %}">
+            Commencer à scanner
+        </a>
+    </div>
+</div>
+{% endblock %}
