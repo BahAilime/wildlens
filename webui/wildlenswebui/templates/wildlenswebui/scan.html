@@ -1,0 +1,64 @@
+{% extends 'wildlenswebui/base.html' %}
+
+{% block content %}
+<div class="scan-container">
+    <h2>Scannez une empreinte</h2>
+    
+    <div class="track-preview">
+        <img id="track-preview-img" src="#" alt="Aperçu de l'empreinte" style="display: none;">
+    </div>
+    
+    <form id="track-upload-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="camera-button">
+            <label for="id_track_image">
+                <div class="icon">
+                    📷
+                </div>
+            </label>
+            <input type="file" id="id_track_image" name="track_image" accept="image/*" capture="camera" style="display: none;">
+        </div>
+        <button type="submit" id="submit-btn" class="icon" style="display: none;">🔎</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('id_track_image').addEventListener('change', function() {
+        var preview = document.getElementById('track-preview-img');
+        var file = this.files[0];
+        var reader = new FileReader();
+        
+        reader.onloadend = function() {
+            preview.src = reader.result;
+            preview.style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'block';
+        }
+        
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.getElementById('track-upload-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = new FormData(this);
+        
+        fetch('{% url "scan_track" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = `/animal/${data.id}/`;
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+        });
+    });
+</script>
+{% endblock %}
