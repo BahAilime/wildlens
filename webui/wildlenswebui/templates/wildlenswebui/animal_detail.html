@@ -1,0 +1,40 @@
+{% extends 'wildlenswebui/base.html' %}
+
+{% block content %}
+<div class="animal-detail">
+    <h1>WILDLENS</h1>
+    <p>To know them is to love them</p>
+    
+    <div class="animal-card">
+        <div class="animal-header">
+            <h2>{{ animal.espece }}</h2>
+            <p class="latin-name">{{ animal.nom_latin }}</p>
+            {% if animal.image %}
+                <img src="{{ animal.image.url }}" alt="{{ animal.espece }}" class="animal-image">
+            {% endif %}
+        </div>
+        
+        <div class="animal-info">
+            <h3>Famille</h3>
+            <p>{{ animal.famille }}</p>
+            
+            <h3>Taille</h3>
+            <p>{{ animal.taille }}</p>
+            
+            <h3>Habitat</h3>
+            <p>{{ animal.habitat }}</p>
+            
+            <h3>Région</h3>
+            <p>{{ animal.region }}</p>
+            
+            <h3>Description</h3>
+            <p>{{ animal.description }}</p>
+            
+            {% if animal.fun_fact %}
+            <h3>Le saviez-vous ?</h3>
+            <p>{{ animal.fun_fact }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
