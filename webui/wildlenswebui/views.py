@@ -1,8 +1,21 @@
-# wildlenswebui/views.py
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Animal
 from .forms import TrackUploadForm
+import cv2
+import numpy as np
+import base64
+# from .ml_model import model
+
+def base64_to_cv2_image(base64_string):
+    # retire les en-tetes comme "data:image/jpeg;base64,"
+    if "base64," in base64_string:
+        base64_string = base64_string.split("base64,")[1]
+    
+    img_data = base64.b64decode(base64_string)
+    nparr = np.frombuffer(img_data, np.uint8)
+
+    return cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
 def home(request):
     return render(request, 'wildlenswebui/home.html')
@@ -38,3 +51,45 @@ def scan_track(request):
 def animal_detail(request, animal_id):
     animal = Animal.objects.get(pk=animal_id)
     return render(request, 'wildlenswebui/animal_detail.html', {'animal': animal})
+
+def index(request):
+    return render(request, 'wildlenswebui/index.html',)
+
+def analize(request):
+    image_data = request.POST.get('image')
+    
+    image = base64_to_cv2_image(image_data)
+    
+    resized_img = cv2.resize(image, (224, 224))
+
+    # Conversion en niveaux de gris
+    gray = cv2.cvtColor(resized_img, cv2.COLOR_BGR2GRAY)
+
+    # Application d'un flou gaussien pour réduire le bruit
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+
+    # Forcer le type en uint8 après le flou
+    blurred = np.uint8(blurred)
+
+    # Seuillage adaptatif pour isoler l'empreinte
+    thresh = cv2.adaptiveThreshold(
+        blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+        cv2.THRESH_BINARY_INV, 11, 2
+    )
+
+    # Conversion BGR à RGB (TensorFlow utilise RGB)
+    rgb_img = cv2.cvtColor(thresh, cv2.COLOR_BGR2RGB)
+
+
+    # a = model.predict(rgb_img)
+    
+    return JsonResponse({
+        "name": str(a),
+        "latin": "Testus testicus",
+        "image": "test.jpg",
+        "description": "A test species for testing purposes.",
+        "habitat": "Test environment",
+        "track_info": "Test track information",
+        "confidence": 75,
+        "img": base64.b64encode(cv2.imencode('.jpg', rgb_img)[1]).decode()
+        })
