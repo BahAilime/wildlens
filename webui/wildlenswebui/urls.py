@@ -21,8 +21,6 @@ from django.conf.urls.static import static
 from wildlenswebui import views
 from django.contrib import admin
 
-admin.autodiscover()
-
 urlpatterns = [
     path('old', views.home, name='home'),
     path('', views.index, name='index'),

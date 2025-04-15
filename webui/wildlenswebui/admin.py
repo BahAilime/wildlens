@@ -1,8 +1,6 @@
 from django.contrib import admin
 from .models import Animal, Analysis
 
-# admin.site.register(Animal)
-# admin.site.register(Analysis)
 @admin.register(Animal)
 class AnimalAdmin(admin.ModelAdmin):
     list_display = ('espece', 'nom_latin')  # Colonnes affichées dans la liste
