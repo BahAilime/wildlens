@@ -19,11 +19,15 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from wildlenswebui import views
+from django.contrib import admin
+
+admin.autodiscover()
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('index', views.index, name='index'),
+    path('old', views.home, name='home'),
+    path('', views.index, name='index'),
     path('scan/', views.scan_track, name='scan_track'),
     path('analize/', views.analize, name='analize'),
     path('animal/<int:animal_id>/', views.animal_detail, name='animal_detail'),
+    path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
