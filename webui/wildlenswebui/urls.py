@@ -22,6 +22,8 @@ from wildlenswebui import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('index', views.index, name='index'),
     path('scan/', views.scan_track, name='scan_track'),
+    path('analize/', views.analize, name='analize'),
     path('animal/<int:animal_id>/', views.animal_detail, name='animal_detail'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
