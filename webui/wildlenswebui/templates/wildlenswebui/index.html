@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,41 +17,42 @@
             --text-color: #212121;
             --light-text: #f5f5f5;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text-color);
             background-color: var(--light-color);
         }
-        
+
         .navbar {
             background-color: var(--primary-color);
         }
-        
-        .navbar-brand, .nav-link {
+
+        .navbar-brand,
+        .nav-link {
             color: var(--light-text) !important;
         }
-        
+
         .btn-primary {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
         }
-        
+
         .btn-primary:hover {
             background-color: var(--dark-color);
             border-color: var(--dark-color);
         }
-        
+
         .btn-outline-primary {
             color: var(--primary-color);
             border-color: var(--primary-color);
         }
-        
+
         .btn-outline-primary:hover {
             background-color: var(--primary-color);
             color: white;
         }
-        
+
         .hero-section {
             background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1511497584788-876760111969?ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80');
             background-size: cover;
@@ -59,7 +61,7 @@
             padding: 100px 0;
             margin-bottom: 30px;
         }
-        
+
         .feature-card {
             border-radius: 10px;
             overflow: hidden;
@@ -67,17 +69,17 @@
             transition: transform 0.3s ease;
             height: 100%;
         }
-        
+
         .feature-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .feature-icon {
             font-size: 2.5rem;
             color: var(--primary-color);
             margin-bottom: 15px;
         }
-        
+
         .upload-area {
             border: 2px dashed var(--secondary-color);
             border-radius: 10px;
@@ -86,66 +88,67 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        
+
         .upload-area:hover {
             background-color: rgba(129, 199, 132, 0.1);
         }
-        
+
         .map-container {
             height: 300px;
             border-radius: 10px;
             overflow: hidden;
             margin-top: 20px;
         }
-        
+
         .result-card {
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
-        
+
         .confidence-bar {
             height: 10px;
             border-radius: 5px;
             background-color: #e0e0e0;
             margin-bottom: 5px;
         }
-        
+
         .confidence-level {
             height: 100%;
             background-color: var(--primary-color);
             border-radius: 5px;
         }
-        
+
         .footer {
             background-color: var(--primary-color);
             color: white;
             padding: 30px 0;
             margin-top: 50px;
         }
-        
+
         .species-info {
             display: none;
         }
-        
+
         .loading-spinner {
             display: none;
             text-align: center;
             margin: 20px 0;
         }
-        
+
         @media (max-width: 768px) {
             .hero-section {
                 padding: 60px 0;
             }
-            
+
             .feature-card {
                 margin-bottom: 20px;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
@@ -179,7 +182,8 @@
     <section class="hero-section text-center" id="home">
         <div class="container">
             <h1 class="display-4 fw-bold mb-4">Identifiez les empreintes de mammifères</h1>
-            <p class="lead mb-5">Découvrez la faune sauvage qui vous entoure grâce à notre technologie de reconnaissance d'empreintes basée sur l'intelligence artificielle</p>
+            <p class="lead mb-5">Découvrez la faune sauvage qui vous entoure grâce à notre technologie de reconnaissance
+                d'empreintes basée sur l'intelligence artificielle</p>
             <a href="#detect" class="btn btn-light btn-lg px-4 me-2">Commencer</a>
             <a href="#about" class="btn btn-outline-light btn-lg px-4">En savoir plus</a>
         </div>
@@ -200,7 +204,8 @@
                                 <i class="fas fa-camera"></i>
                             </div>
                             <h5 class="card-title">Capturez l'empreinte</h5>
-                            <p class="card-text">Prenez une photo claire de l'empreinte que vous avez trouvée dans la nature</p>
+                            <p class="card-text">Prenez une photo claire de l'empreinte que vous avez trouvée dans la
+                                nature</p>
                         </div>
                     </div>
                 </div>
@@ -211,7 +216,8 @@
                                 <i class="fas fa-map-marker-alt"></i>
                             </div>
                             <h5 class="card-title">Indiquez la région</h5>
-                            <p class="card-text">Précisez où vous avez trouvé l'empreinte pour améliorer la précision</p>
+                            <p class="card-text">Précisez où vous avez trouvé l'empreinte pour améliorer la précision
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -222,7 +228,8 @@
                                 <i class="fas fa-search"></i>
                             </div>
                             <h5 class="card-title">Identifiez l'animal</h5>
-                            <p class="card-text">Notre IA analyse l'image et vous indique à quel animal appartient l'empreinte</p>
+                            <p class="card-text">Notre IA analyse l'image et vous indique à quel animal appartient
+                                l'empreinte</p>
                         </div>
                     </div>
                 </div>
@@ -280,7 +287,8 @@
                             </select>
                             <div class="map-container" id="mapContainer">
                                 <!-- Map will be loaded here -->
-                                <img src="https://via.placeholder.com/600x300?text=Carte+interactive" class="img-fluid" alt="Carte interactive">
+                                <img src="https://via.placeholder.com/600x300?text=Carte+interactive" class="img-fluid"
+                                    alt="Carte interactive">
                             </div>
                             <div class="form-check mt-3">
                                 <input class="form-check-input" type="checkbox" id="useLocation">
@@ -298,7 +306,7 @@
                     <i class="fas fa-search me-2"></i>Identifier l'empreinte
                 </button>
             </div>
-            
+
             <!-- Loading Spinner -->
             <div class="loading-spinner" id="loadingSpinner">
                 <div class="spinner-border text-primary" role="status">
@@ -306,7 +314,7 @@
                 </div>
                 <p class="mt-2">Analyse en cours, veuillez patienter...</p>
             </div>
-            
+
             <!-- Results Section (initially hidden) -->
             <div class="results-section mt-5" id="resultsSection" style="display: none;">
                 <h3 class="text-center mb-4">Résultats de l'analyse</h3>
@@ -318,7 +326,8 @@
                             </div>
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-3">
-                                    <img id="speciesImage" src="https://via.placeholder.com/100" class="rounded me-3" width="100" alt="Espèce identifiée">
+                                    <img id="speciesImage" src="https://via.placeholder.com/100" class="rounded me-3"
+                                        width="100" alt="Espèce identifiée">
                                     <div>
                                         <h4 id="speciesName">Nom de l'espèce</h4>
                                         <p id="speciesLatinName" class="text-muted fst-italic mb-0">Nom latin</p>
@@ -351,7 +360,8 @@
                             <div class="card-body">
                                 <ul class="nav nav-tabs" id="speciesTabs">
                                     <li class="nav-item">
-                                        <a class="nav-link active" data-bs-toggle="tab" href="#description">Description</a>
+                                        <a class="nav-link active" data-bs-toggle="tab"
+                                            href="#description">Description</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" href="#habitat">Habitat</a>
@@ -368,18 +378,21 @@
                                         <p id="speciesHabitat">Informations sur l'habitat...</p>
                                         <div id="distributionMap" class="mt-3">
                                             <!-- Distribution map will be loaded here -->
-                                            <img src="https://via.placeholder.com/400x200?text=Carte+de+distribution" class="img-fluid rounded" alt="Carte de distribution">
+                                            <img src="https://via.placeholder.com/400x200?text=Carte+de+distribution"
+                                                class="img-fluid rounded" alt="Carte de distribution">
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="empreintes">
                                         <p id="trackInfo">Informations sur les empreintes...</p>
                                         <div class="row mt-3">
                                             <div class="col-6">
-                                                <img src="https://via.placeholder.com/200?text=Empreinte+avant" class="img-fluid rounded" alt="Empreinte avant">
+                                                <img src="https://via.placeholder.com/200?text=Empreinte+avant"
+                                                    class="img-fluid rounded" alt="Empreinte avant">
                                                 <p class="text-center mt-1">Patte avant</p>
                                             </div>
                                             <div class="col-6">
-                                                <img src="https://via.placeholder.com/200?text=Empreinte+arrière" class="img-fluid rounded" alt="Empreinte arrière">
+                                                <img src="https://via.placeholder.com/200?text=Empreinte+arrière"
+                                                    class="img-fluid rounded" alt="Empreinte arrière">
                                                 <p class="text-center mt-1">Patte arrière</p>
                                             </div>
                                         </div>
@@ -404,7 +417,8 @@
                 <!-- Gallery items will be dynamically loaded here -->
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Renard" class="card-img-top" alt="Empreinte de Renard">
+                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Renard" class="card-img-top"
+                            alt="Empreinte de Renard">
                         <div class="card-body">
                             <h5 class="card-title">Renard</h5>
                             <p class="card-text">Empreinte typique de renard trouvée en forêt</p>
@@ -414,7 +428,8 @@
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Loup" class="card-img-top" alt="Empreinte de Loup">
+                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Loup" class="card-img-top"
+                            alt="Empreinte de Loup">
                         <div class="card-body">
                             <h5 class="card-title">Loup</h5>
                             <p class="card-text">Empreinte de loup identifiée en montagne</p>
@@ -424,7 +439,8 @@
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+d'Ours" class="card-img-top" alt="Empreinte d'Ours">
+                        <img src="https://via.placeholder.com/300x200?text=Empreinte+d'Ours" class="card-img-top"
+                            alt="Empreinte d'Ours">
                         <div class="card-body">
                             <h5 class="card-title">Ours</h5>
                             <p class="card-text">Empreinte d'ours brun dans une zone forestière</p>
@@ -434,7 +450,8 @@
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Lynx" class="card-img-top" alt="Empreinte de Lynx">
+                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Lynx" class="card-img-top"
+                            alt="Empreinte de Lynx">
                         <div class="card-body">
                             <h5 class="card-title">Lynx</h5>
                             <p class="card-text">Empreinte de lynx trouvée en zone montagneuse</p>
@@ -444,7 +461,8 @@
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Castor" class="card-img-top" alt="Empreinte de Castor">
+                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Castor" class="card-img-top"
+                            alt="Empreinte de Castor">
                         <div class="card-body">
                             <h5 class="card-title">Castor</h5>
                             <p class="card-text">Empreinte de castor près d'un cours d'eau</p>
@@ -454,7 +472,8 @@
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Raton+Laveur" class="card-img-top" alt="Empreinte de Raton Laveur">
+                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Raton+Laveur"
+                            class="card-img-top" alt="Empreinte de Raton Laveur">
                         <div class="card-body">
                             <h5 class="card-title">Raton Laveur</h5>
                             <p class="card-text">Empreinte caractéristique de raton laveur</p>
@@ -478,18 +497,25 @@
             </div>
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0">
-                    <img src="https://via.placeholder.com/600x400?text=WildLens+Project" class="img-fluid rounded" alt="WildLens Project">
+                    <img src="https://via.placeholder.com/600x400?text=WildLens+Project" class="img-fluid rounded"
+                        alt="WildLens Project">
                 </div>
                 <div class="col-lg-6">
                     <h3>Notre mission</h3>
-                    <p>WildLens est une association française engagée dans la protection animale dans les régions sauvages. Nous collectons des fonds pour financer nos actions et menons des campagnes de sensibilisation en forêt pour informer le public sur les enjeux de la conservation de la faune sauvage.</p>
-                    <p>Notre application d'identification d'empreintes vise à sensibiliser le public à la préservation de la faune sauvage de façon ludique, en leur montrant les traces laissées par ces animaux dans leur habitat naturel.</p>
+                    <p>WildLens est une association française engagée dans la protection animale dans les régions
+                        sauvages. Nous collectons des fonds pour financer nos actions et menons des campagnes de
+                        sensibilisation en forêt pour informer le public sur les enjeux de la conservation de la faune
+                        sauvage.</p>
+                    <p>Notre application d'identification d'empreintes vise à sensibiliser le public à la préservation
+                        de la faune sauvage de façon ludique, en leur montrant les traces laissées par ces animaux dans
+                        leur habitat naturel.</p>
                     <h3 class="mt-4">Notre technologie</h3>
                     <p>Notre système utilise un modèle hybride qui combine :</p>
                     <ul>
                         <li>Une analyse visuelle des empreintes via un réseau de neurones convolutifs (CNN)</li>
                         <li>Des informations sur la distribution géographique des espèces</li>
-                        <li>Des techniques avancées de traitement d'image pour extraire les caractéristiques distinctives</li>
+                        <li>Des techniques avancées de traitement d'image pour extraire les caractéristiques
+                            distinctives</li>
                     </ul>
                     <p>Cette approche nous permet d'atteindre une précision d'identification supérieure à 89%.</p>
                 </div>
@@ -563,31 +589,114 @@
 
     <!-- Species Info Templates (Hidden) -->
     <div class="species-info" id="species-castor">
-        <div class="species-data" 
-             data-name="Castor" 
-             data-latin="Castor canadensis" 
-             data-image="https://via.placeholder.com/100?text=Castor"
-             data-description="Le castor d'Europe, appelé également le castor commun ou le castor d'Eurasie, est un mammifère rongeur aquatique de la famille des castoridés. À l'exception des humains, le castor est l'un des seuls mammifères qui façonnent son environnement."
-             data-habitat="Le castor d'Europe vit le long des rivières, des ruisseaux, des lacs et des étangs."
-             data-track-info="Les empreintes de castor sont caractérisées par 5 orteils avec des griffes visibles et une palmure entre les doigts. La patte arrière est beaucoup plus grande que la patte avant.">
+        <div class="species-data" data-name="Castor" data-latin="Castor canadensis"
+            data-image="https://via.placeholder.com/100?text=Castor"
+            data-description="Le castor d'Europe, appelé également le castor commun ou le castor d'Eurasie, est un mammifère rongeur aquatique de la famille des castoridés. À l'exception des humains, le castor est l'un des seuls mammifères qui façonnent son environnement."
+            data-habitat="Le castor d'Europe vit le long des rivières, des ruisseaux, des lacs et des étangs."
+            data-track-info="Les empreintes de castor sont caractérisées par 5 orteils avec des griffes visibles et une palmure entre les doigts. La patte arrière est beaucoup plus grande que la patte avant.">
         </div>
     </div>
-    
+
     <div class="species-info" id="species-renard">
-        <div class="species-data" 
-             data-name="Renard" 
-             data-latin="Vulpes vulpes" 
-             data-image="https://via.placeholder.com/100?text=Renard"
-             data-description="Le renard roux, appelé également le renard commun ou le renard rouge, est un mammifère carnivore de la famille des canidés. Les renards utilisent le champ magnétique de la Terre comme un 'radar' pour chasser."
-             data-habitat="L'espèce vit dans les forêts, les champs, les prairies, les toundras, les steppes, les montagnes."
-             data-track-info="L'empreinte du renard ressemble à celle d'un petit chien, avec 4 coussinets digitaux et un coussinet plantaire en forme de triangle. Les griffes sont visibles et l'empreinte est plus allongée et plus étroite que celle du chien.">
+        <div class="species-data" data-name="Renard" data-latin="Vulpes vulpes"
+            data-image="https://via.placeholder.com/100?text=Renard"
+            data-description="Le renard roux, appelé également le renard commun ou le renard rouge, est un mammifère carnivore de la famille des canidés. Les renards utilisent le champ magnétique de la Terre comme un 'radar' pour chasser."
+            data-habitat="L'espèce vit dans les forêts, les champs, les prairies, les toundras, les steppes, les montagnes."
+            data-track-info="L'empreinte du renard ressemble à celle d'un petit chien, avec 4 coussinets digitaux et un coussinet plantaire en forme de triangle. Les griffes sont visibles et l'empreinte est plus allongée et plus étroite que celle du chien.">
         </div>
     </div>
 
     <!-- Scripts -->
+    <script>
+        function convertDMSToDecimal(dms, ref) {
+            if (!Array.isArray(dms)) return null;
+            const [deg, min, sec] = dms;
+            let decimal = deg + min / 60 + sec / 3600;
+            if (ref === 'S' || ref === 'W') decimal *= -1;
+            return decimal;
+        }
+
+        function extractCoordinates(exifData) {
+            let lat = null;
+            let lon = null;
+
+            // Latitude
+            if (exifData.GPSLatitude && exifData.GPSLatitudeRef) {
+                lat = convertDMSToDecimal(exifData.GPSLatitude, exifData.GPSLatitudeRef);
+            } else if (exifData.Latitude && exifData.LatitudeRef) {
+                lat = convertDMSToDecimal(exifData.Latitude, exifData.LatitudeRef);
+            } else if (exifData.lat || exifData.latitude || exifData.Lat) {
+                lat = exifData.lat || exifData.latitude || exifData.Lat;
+            }
+
+            // Longitude
+            if (exifData.GPSLongitude && exifData.GPSLongitudeRef) {
+                lon = convertDMSToDecimal(exifData.GPSLongitude, exifData.GPSLongitudeRef);
+            } else if (exifData.Longitude && exifData.LongitudeRef) {
+                lon = convertDMSToDecimal(exifData.Longitude, exifData.LongitudeRef);
+            } else if (exifData.lon || exifData.longitude || exifData.Lng || exifData.Long) {
+                lon = exifData.lon || exifData.longitude || exifData.Lng || exifData.Long;
+            }
+
+            // Alternative string format genre "Location": "43.467448, 11.885126"
+            if ((!lat || !lon) && exifData.Location) {
+                const match = exifData.Location.match(/(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)/);
+                if (match) {
+                    lat = parseFloat(match[1]);
+                    lon = parseFloat(match[3]);
+                }
+            }
+
+            if (lat !== null && lon !== null) {
+                return { latitude: lat, longitude: lon };
+            } else {
+                return null;
+            }
+        }
+        function extractExifDate(exifData) {
+            const dateFields = [
+                'DateTimeOriginal',
+                'DateTimeDigitized',
+                'DateTime',
+                'CreateDate',
+                'CreationDate',
+                'ModifyDate'
+            ];
+
+            for (const field of dateFields) {
+                if (exifData[field]) {
+                    return formatExifDate(exifData[field]);
+                }
+            }
+
+            console.warn("🌘 Aucune date trouvée dans les EXIF, meuf. C’est peut-être un cliché intemporel ?");
+            return null;
+        }
+
+        function formatExifDate(rawDate) {
+            // Exemple EXIF : "2023:07:14 10:45:30"
+            if (typeof rawDate === 'string') {
+                const parts = rawDate.split(' ');
+                const datePart = parts[0].replace(/:/g, '-');
+                const timePart = parts[1];
+                const formattedDate = `${datePart}T${timePart}`;
+                const isoString = formattedDate.length >= 19 ? formattedDate : formattedDate + ':00Z';
+                return new Date(isoString);
+            }
+
+            // Si c’est déjà un objet Date ou timestamp numérique
+            if (rawDate instanceof Date) return rawDate;
+            if (typeof rawDate === 'number') return new Date(rawDate);
+
+            return null;
+        }
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Upload area functionality
             const uploadArea = document.getElementById('uploadArea');
             const imageUpload = document.getElementById('imageUpload');
@@ -598,41 +707,41 @@
             const detectButton = document.getElementById('detectButton');
             const regionSelect = document.getElementById('regionSelect');
             const useLocation = document.getElementById('useLocation');
-            
+
             // Results section
             const loadingSpinner = document.getElementById('loadingSpinner');
             const resultsSection = document.getElementById('resultsSection');
-            
+
             // Camera functionality
             const captureButton = document.getElementById('captureButton');
             const cameraModal = new bootstrap.Modal(document.getElementById('cameraModal'));
             const cameraFeed = document.getElementById('cameraFeed');
             const captureCanvas = document.getElementById('captureCanvas');
             const takePictureButton = document.getElementById('takePictureButton');
-            
+
             // Upload area click handler
-            uploadArea.addEventListener('click', function() {
+            uploadArea.addEventListener('click', function () {
                 imageUpload.click();
             });
-            
+
             // File upload handler
-            imageUpload.addEventListener('change', function() {
+            imageUpload.addEventListener('change', function () {
                 if (this.files && this.files[0]) {
                     const reader = new FileReader();
-                    
-                    reader.onload = function(e) {
+
+                    reader.onload = function (e) {
                         imagePreview.src = e.target.result;
                         uploadPlaceholder.style.display = 'none';
                         imagePreviewContainer.style.display = 'block';
                         checkFormValidity();
                     }
-                    
+
                     reader.readAsDataURL(this.files[0]);
                 }
             });
-            
+
             // Remove image handler
-            removeImage.addEventListener('click', function(e) {
+            removeImage.addEventListener('click', function (e) {
                 e.stopPropagation();
                 imageUpload.value = '';
                 imagePreview.src = '';
@@ -640,14 +749,14 @@
                 imagePreviewContainer.style.display = 'none';
                 checkFormValidity();
             });
-            
+
             // Region select handler
-            regionSelect.addEventListener('change', function() {
+            regionSelect.addEventListener('change', function () {
                 checkFormValidity();
             });
-            
+
             // Use location handler
-            useLocation.addEventListener('change', function() {
+            useLocation.addEventListener('change', function () {
                 if (this.checked) {
                     // Simulate getting user's location
                     setTimeout(() => {
@@ -659,26 +768,40 @@
                     regionSelect.disabled = false;
                 }
             });
-            
+
             // Check if form is valid
             function checkFormValidity() {
-                if (imagePreviewContainer.style.display === 'block' && 
+                if (imagePreviewContainer.style.display === 'block' &&
                     (regionSelect.value !== null && regionSelect.value !== 'Choisissez une région')) {
                     detectButton.disabled = false;
                 } else {
                     detectButton.disabled = true;
                 }
             }
-            
+
             // Detect button handler
-            detectButton.addEventListener('click', function() {
+            detectButton.addEventListener('click', function () {
                 // Show loading spinner
                 loadingSpinner.style.display = 'block';
                 resultsSection.style.display = 'none';
-                
+
                 // Simulate API call
                 const formData = new FormData();
                 formData.append('image', imagePreview.src);
+                let exif = ""
+                let date = ""
+                EXIF.getData(imagePreview, function () {
+                    exif = EXIF.getAllTags(this);
+                    coo = extractCoordinates(exif)
+                    date: date = extractExifDate(exif)
+                    console.log("DATE", date);
+
+                });
+                console.log(exif);
+                formData.append('coordinates', JSON.stringify(coo));
+                formData.append('date', date.toISOString());
+
+
                 fetch('{% url "analize" %}', {
                     method: 'POST',
                     body: formData,
@@ -686,47 +809,47 @@
                         'X-CSRFToken': document.querySelector('[name=csrfToken]').value
                     }
                 })
-                .then(response => response.json())
-                .then(data => {
-                    loadingSpinner.style.display = 'none';
-                    resultsSection.style.display = 'block';
-                    
-                    // Populate results with sample data
-                    // In a real app, this would come from the API
-                    document.getElementById('speciesName').textContent = data.name;
-                    document.getElementById('speciesLatinName').textContent = data.latin;
-                    const imageBlob = atob(data.img);
-                    const arrayBuffer = new Uint8Array(imageBlob.length);
-                    for (let i = 0; i < imageBlob.length; i++) {
-                        arrayBuffer[i] = imageBlob.charCodeAt(i);
-                    }
-                    const imageBlobUrl = URL.createObjectURL(new Blob([arrayBuffer], {type: 'image/jpg'}));
-                    document.getElementById('speciesImage').src = imageBlobUrl;
-                    document.getElementById('speciesDescription').textContent = data.description;
-                    document.getElementById('speciesHabitat').textContent = data.habitat;
-                    document.getElementById('trackInfo').textContent = data.track_info;
-                    
-                    document.getElementById('confidenceLevel').style.width = `${data.confidence}%`;
-                    document.getElementById('confidenceText').textContent = `${data.confidence}%`;
-                    
-                    // Scroll to results
-                    resultsSection.scrollIntoView({ behavior: 'smooth' });
-                })
-                .catch(error => {
-                    console.error('Erreur:', error);
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        loadingSpinner.style.display = 'none';
+                        resultsSection.style.display = 'block';
+
+                        // Populate results with sample data
+                        // In a real app, this would come from the API
+                        document.getElementById('speciesName').textContent = data.name;
+                        document.getElementById('speciesLatinName').textContent = data.latin;
+                        const imageBlob = atob(data.img);
+                        const arrayBuffer = new Uint8Array(imageBlob.length);
+                        for (let i = 0; i < imageBlob.length; i++) {
+                            arrayBuffer[i] = imageBlob.charCodeAt(i);
+                        }
+                        const imageBlobUrl = URL.createObjectURL(new Blob([arrayBuffer], { type: 'image/jpg' }));
+                        document.getElementById('speciesImage').src = imageBlobUrl;
+                        document.getElementById('speciesDescription').textContent = data.description;
+                        document.getElementById('speciesHabitat').textContent = data.habitat;
+                        document.getElementById('trackInfo').textContent = data.track_info;
+
+                        document.getElementById('confidenceLevel').style.width = `${data.confidence}%`;
+                        document.getElementById('confidenceText').textContent = `${data.confidence}%`;
+
+                        // Scroll to results
+                        resultsSection.scrollIntoView({ behavior: 'smooth' });
+                    })
+                    .catch(error => {
+                        console.error('Erreur:', error);
+                    });
             });
-            
+
             // Camera functionality
-            captureButton.addEventListener('click', function() {
+            captureButton.addEventListener('click', function () {
                 // Check if browser supports getUserMedia
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                     navigator.mediaDevices.getUserMedia({ video: true })
-                        .then(function(stream) {
+                        .then(function (stream) {
                             cameraFeed.srcObject = stream;
                             cameraModal.show();
                         })
-                        .catch(function(error) {
+                        .catch(function (error) {
                             console.error("Camera error: ", error);
                             alert("Impossible d'accéder à la caméra. Veuillez vérifier les permissions.");
                         });
@@ -734,28 +857,28 @@
                     alert("Votre navigateur ne supporte pas l'accès à la caméra.");
                 }
             });
-            
+
             // Take picture handler
-            takePictureButton.addEventListener('click', function() {
+            takePictureButton.addEventListener('click', function () {
                 const context = captureCanvas.getContext('2d');
                 captureCanvas.width = cameraFeed.videoWidth;
                 captureCanvas.height = cameraFeed.videoHeight;
                 context.drawImage(cameraFeed, 0, 0, captureCanvas.width, captureCanvas.height);
-                
+
                 const imageDataUrl = captureCanvas.toDataURL('image/png');
                 imagePreview.src = imageDataUrl;
                 uploadPlaceholder.style.display = 'none';
                 imagePreviewContainer.style.display = 'block';
-                
+
                 // Stop camera stream
                 const stream = cameraFeed.srcObject;
                 const tracks = stream.getTracks();
                 tracks.forEach(track => track.stop());
-                
+
                 cameraModal.hide();
                 checkFormValidity();
             });
-            
+
             // Clean up camera when modal is closed
             document.getElementById('cameraModal').addEventListener('hidden.bs.modal', function () {
                 if (cameraFeed.srcObject) {
@@ -764,17 +887,18 @@
                     tracks.forEach(track => track.stop());
                 }
             });
-            
+
             // Gallery button handler
-            document.getElementById('galleryButton').addEventListener('click', function() {
+            document.getElementById('galleryButton').addEventListener('click', function () {
                 // Simulate selecting an example image
                 imagePreview.src = 'https://via.placeholder.com/400x300?text=Exemple+d\'empreinte';
                 uploadPlaceholder.style.display = 'none';
                 imagePreviewContainer.style.display = 'block';
                 checkFormValidity();
             });
-            
+
         });
     </script>
 </body>
+
 </html>
