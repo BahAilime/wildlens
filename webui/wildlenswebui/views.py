@@ -5,7 +5,11 @@ from .forms import TrackUploadForm
 import cv2
 import numpy as np
 import base64
-# from .ml_model import model
+import json
+from .models import Analysis, Animal
+from datetime import datetime
+import dateutil.parser
+
 
 def base64_to_cv2_image(base64_string):
     # retire les en-tetes comme "data:image/jpeg;base64,"
@@ -57,9 +61,11 @@ def index(request):
 
 def analize(request):
     image_data = request.POST.get('image')
+    coo = request.POST.get('coordinates')
+    coo = json.loads(coo)
+    date = dateutil.parser.isoparse(request.POST.get('date'))
     
     image = base64_to_cv2_image(image_data)
-    
     resized_img = cv2.resize(image, (224, 224))
 
     # Conversion en niveaux de gris
@@ -82,7 +88,17 @@ def analize(request):
 
 
     # a = model.predict(rgb_img)
-    
+    a = "YES"
+
+    newAnalysis = Analysis.objects.create(
+        date_creation=date,
+        latitude=coo["latitude"],
+        longitude=coo["longitude"],
+        animal=Animal.objects.first(),
+        confidence=75,
+        image=image_data
+    )
+
     return JsonResponse({
         "name": str(a),
         "latin": "Testus testicus",
