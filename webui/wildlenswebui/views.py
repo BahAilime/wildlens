@@ -77,11 +77,11 @@ def analize(request):
 
     # Convertir l'image OpenCV en image PIL
     image = cv2.cvtColor(cv2_img, cv2.COLOR_BGR2RGB)
-    image = Image.fromarray(image).convert("RGB")
+    image_analyse = Image.fromarray(image).convert("RGB")
 
     # resizing the image to be at least 224x224 and then cropping from the center
     size = (224, 224)
-    image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
+    image = ImageOps.fit(image_analyse, size, Image.Resampling.LANCZOS)
 
     # turn the image into a numpy array
     image_array = np.asarray(image)
@@ -96,11 +96,11 @@ def analize(request):
     prediction = model.predict(data)
     index = np.argmax(prediction)
     class_name = class_names[index]
-    confidence_score = prediction[0][index]
+    confidence_score = float(prediction[0][index])
 
     # Print prediction and confidence score
     print("Class:", class_name[2:], end="")
-    print("Confidence Score:", confidence_score)
+    print("Confidence Score:", prediction)
 
     newAnalysis = Analysis.objects.create(
         date_creation=date,
@@ -116,6 +116,14 @@ def analize(request):
     model.summary(print_fn=lambda line: stream.write(line + "\n"))
     summary = stream.getvalue()
 
+    # PIL (RGB) → numpy (BGR)
+    image_opencv = np.array(image_analyse)
+    image_opencv = cv2.cvtColor(image_opencv, cv2.COLOR_RGB2BGR)
+
+    # Encodage en JPEG + base64 pour l'envoyer
+    _, buffer = cv2.imencode('.jpg', image_opencv)
+    image_base64 = base64.b64encode(buffer).decode()
+
     return JsonResponse({
         "name": str(class_name),
         "latin": "Testus testicus",
@@ -123,6 +131,6 @@ def analize(request):
         "description": "A test species for testing purposes.",
         "habitat": "Test environment",
         "track_info": "Test track information",
-        "confidence": 75,
-        "img": base64.b64encode(cv2.imencode('.jpg', image)[1]).decode()
+        "confidence": round(confidence_score * 100),
+        "img": image_base64
         })

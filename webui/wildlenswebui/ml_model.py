@@ -6,7 +6,7 @@ import numpy as np
 np.set_printoptions(suppress=True)
 
 # Load the model
-model = load_model("D:\devs\wildlens\webui\wildlenswebui\model\model_final.h5", compile=False)
+model = load_model("D:\devs\wildlens\webui\wildlenswebui\model\keras_model.h5", compile=False)
 
 # Load the labels
 class_names = open("D:\devs\wildlens\webui\wildlenswebui\model\labels.txt", "r").readlines()
