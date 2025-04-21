@@ -68,8 +68,6 @@ def analize(request):
     date = dateutil.parser.isoparse(request.POST.get('date'))
 
     # Create the array of the right shape to feed into the keras model
-    # The 'length' or number of images you can put into the array is
-    # determined by the first position in the shape tuple, in this case 1
     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
     # Replace this with the path to your image
@@ -100,21 +98,24 @@ def analize(request):
 
     # Print prediction and confidence score
     print("Class:", class_name[2:], end="")
-    print("Confidence Score:", prediction)
+    print("Confidence Score:", confidence_score)
 
+    print(index)
+
+    # for animal in Animal.objects.all():
+    #     print(animal.espece)
+
+    predicted_animal = Animal.objects.get(id__iexact=index+1)
+
+    # Créer une nouvelle analyse
     newAnalysis = Analysis.objects.create(
         date_creation=date,
         latitude=coo["latitude"],
         longitude=coo["longitude"],
-        animal=Animal.objects.first(),
-        confidence=75,
+        animal=predicted_animal,
+        confidence=round(confidence_score * 100),
         image=image_data
     )
-
-    # Capturer la summary dans une string
-    stream = io.StringIO()
-    model.summary(print_fn=lambda line: stream.write(line + "\n"))
-    summary = stream.getvalue()
 
     # PIL (RGB) → numpy (BGR)
     image_opencv = np.array(image_analyse)
@@ -125,12 +126,16 @@ def analize(request):
     image_base64 = base64.b64encode(buffer).decode()
 
     return JsonResponse({
-        "name": str(class_name),
-        "latin": "Testus testicus",
-        "image": "test.jpg",
-        "description": "A test species for testing purposes.",
-        "habitat": "Test environment",
-        "track_info": "Test track information",
+        "name": predicted_animal.espece,
+        "latin": predicted_animal.nom_latin,
+        "image": predicted_animal.image.url,
+        "description": predicted_animal.description,
+        "habitat": predicted_animal.habitat,
+        "track_info": f"Trouvé à: {coo['latitude']}, {coo['longitude']}",
         "confidence": round(confidence_score * 100),
+        "region": predicted_animal.region,
+        "famille": predicted_animal.famille,
+        "taille": predicted_animal.taille,
+        "fun_fact": predicted_animal.fun_fact,
         "img": image_base64
-        })
+    })

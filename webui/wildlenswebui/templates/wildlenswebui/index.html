@@ -662,8 +662,8 @@
                     return formatExifDate(exifData[field]);
                 }
             }
-
-            return new Date().toISOString();
+            const date = new Date();
+            return date.toISOString();
         }
 
         function formatExifDate(rawDate) {
@@ -771,11 +771,9 @@
                 EXIF.getData(imagePreview, function () {
                     exif = EXIF.getAllTags(this);
                     coo = extractCoordinates(exif)
-                    date: date = extractExifDate(exif)
-                    console.log("DATE", date);
+                    date: date = extractExifDate(exif) === true ? extractExifDate(exif): new Date();
 
                 });
-                console.log(exif);
                 formData.append('coordinates', JSON.stringify(coo));
                 formData.append('date', date.toISOString());
 
@@ -802,7 +800,7 @@
                             arrayBuffer[i] = imageBlob.charCodeAt(i);
                         }
                         const imageBlobUrl = URL.createObjectURL(new Blob([arrayBuffer], { type: 'image/jpg' }));
-                        document.getElementById('speciesImage').src = imageBlobUrl;
+                        document.getElementById('speciesImage').src = data.image;
                         document.getElementById('speciesDescription').textContent = data.description;
                         document.getElementById('speciesHabitat').textContent = data.habitat;
                         document.getElementById('trackInfo').textContent = data.track_info;
