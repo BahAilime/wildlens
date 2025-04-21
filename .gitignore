@@ -3,5 +3,4 @@ venv
 .idea/
 __pycache__
 db*
-/webui/wildlenswebui/model/*
 /webui/media/analyses-images/
