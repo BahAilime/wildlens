@@ -4,4 +4,4 @@ venv
 __pycache__
 db*
 /webui/wildlenswebui/model/*
-/webui/media/*
+/webui/media/analyses-images/
