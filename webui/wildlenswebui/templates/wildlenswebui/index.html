@@ -644,7 +644,7 @@
             if (lat !== null && lon !== null) {
                 return { latitude: lat, longitude: lon };
             } else {
-                return null;
+                return { latitude: -1, longitude: -1 };
             }
         }
         function extractExifDate(exifData) {
@@ -663,8 +663,7 @@
                 }
             }
 
-            console.warn("🌘 Aucune date trouvée dans les EXIF, meuf. C’est peut-être un cliché intemporel ?");
-            return null;
+            return new Date().toISOString();
         }
 
         function formatExifDate(rawDate) {
