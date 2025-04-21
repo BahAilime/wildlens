@@ -11,6 +11,72 @@ from datetime import datetime
 import dateutil.parser
 from .ml_model import model, class_names
 import io
+import base64
+import io
+from django.core.files.base import ContentFile
+from PIL import Image
+from django.utils import timezone
+import os
+from django.conf import settings  # Import settings to access MEDIA_ROOT
+
+
+def save_base64_image(base64_data, upload_path='analyses-images/images/'):
+    try:
+        # 1. Split and Decode Base64 Data:
+        try:
+            format, imgstr = base64_data.split(';base64,')
+            ext = format.split('/')[-1].lower()  # Extract extension and lowercase it
+        except ValueError: #If no format is specified.
+            imgstr = base64_data
+            ext = 'jpg' #Assume the extension to be jpg
+        except:
+            return None #If the formatting of the string is really weird.
+
+        decoded_data = base64.b64decode(imgstr)
+
+        # Validate extension
+        if ext not in ['png', 'jpg', 'jpeg', 'gif', 'webp']:
+            ext = 'jpg'  # Set to a default valid extension.
+
+        # 2. Create Image Object from Decoded Data:
+        image_data = io.BytesIO(decoded_data)
+
+        # 3. Process and Optimize (with Pillow):
+        try:
+            img = Image.open(image_data)
+
+            # Convert to RGB if necessary
+            if img.mode != 'RGB':
+                img = img.convert('RGB')
+
+            # Create a new BytesIO object for the processed image
+            image_data_processed = io.BytesIO()
+
+            # Save as JPEG with optimization. Change 'quality' as needed
+            img.save(image_data_processed, format='JPEG', quality=80)
+            image_data_processed.seek(0)  # Reset the stream position
+
+        except Exception as e:
+            print(f"Image processing error: {e}")
+            return None
+
+        # 4. Generate Unique File Name:
+        timestamp = timezone.now().strftime('%Y%m%d_%H%M%S')
+        file_name = f"image_{timestamp}.jpg" # Always save as JPG after processing.
+
+        # 5. Create Full File Path:
+        full_upload_path = os.path.join(os.path.dirname(__file__), upload_path)
+
+        # Ensure upload directory exists
+        if not os.path.exists(full_upload_path):
+            os.makedirs(full_upload_path)
+
+        django_file = ContentFile(image_data_processed.read(), name=file_name)
+
+        return django_file, os.path.join(upload_path, file_name), file_name
+    except Exception as e:
+        print(f"Error saving base64 image: {e}")
+        return None
 
 
 def base64_to_cv2_image(base64_string):
@@ -108,14 +174,15 @@ def analize(request):
     predicted_animal = Animal.objects.get(id__iexact=index+1)
 
     # Créer une nouvelle analyse
+    image, image_path, image_file_name = save_base64_image(image_data)
     newAnalysis = Analysis.objects.create(
         date_creation=date,
         latitude=coo["latitude"],
         longitude=coo["longitude"],
         animal=predicted_animal,
         confidence=round(confidence_score * 100),
-        image=image_data
     )
+    newAnalysis.image.save(image_file_name, image, save=True)
 
     # PIL (RGB) → numpy (BGR)
     image_opencv = np.array(image_analyse)
@@ -125,10 +192,15 @@ def analize(request):
     _, buffer = cv2.imencode('.jpg', image_opencv)
     image_base64 = base64.b64encode(buffer).decode()
 
+    try:
+        specie_image = predicted_animal.image.url
+    except:
+        specie_image = ""
+
     return JsonResponse({
         "name": predicted_animal.espece,
         "latin": predicted_animal.nom_latin,
-        "image": predicted_animal.image.url,
+        "image": specie_image,
         "description": predicted_animal.description,
         "habitat": predicted_animal.habitat,
         "track_info": f"Trouvé à: {coo['latitude']}, {coo['longitude']}",
