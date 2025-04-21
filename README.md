@@ -9,14 +9,13 @@
 - **Classification des Pattes de Mammifères** : Utilisation de techniques avancées de machine learning pour classifier les pattes de différents mammifères.
 - **Interface Utilisateur Web** : Une interface web développée avec Django pour interagir avec le modèle de classification.
 - **Gestion des Données** : Intégration facile des données des animaux dans la base de données via un script Python.
-- **Gestion des Dépendances** : Utilisation de Poetry pour une gestion simplifiée des dépendances.
 
 ## 🛠️ Installation
 
 ### Prérequis
 
-- Python 3.9 pour la création du modèle
-- Poetry (pour la gestion des dépendances)
+- Python 3.9 (requis pour la compatibilité avec TensorFlow)
+- Assurez-vous d'avoir Python 3.9 installé en plus de toute autre version de Python.
 
 ### Étapes d'Installation
 
@@ -26,29 +25,77 @@
    cd wildlens
    ```
 
-2. **Installer les dépendances avec Poetry** :
+2. **Accéder au répertoire webui** :
    ```bash
-   poetry install
+   cd webui
    ```
 
-3. **Importer les données des animaux dans la base de données** :
+3. **Créer un environnement virtuel Python 3.9** :
    ```bash
-   python manage.py import_animals ../infos_especes.csv
+   py -3.9 -m venv venv
+   ```
+
+4. **Activer l'environnement virtuel** :
+
+   *   **Sous Linux/macOS :**
+        ```bash
+        source venv/bin/activate
+        ```
+   *   **Sous Windows (PowerShell) :**
+        ```powershell
+        .\venv\Scripts\Activate.ps1
+        ```
+   *   **Sous Windows (CMD) :**
+        ```batch
+        .\venv\Scripts\activate.bat
+        ```
+
+5. **Installer les dépendances** :
+   ```bash
+   py -3.9 -m pip install -r requirements.txt
+   ```
+
+6. **Revenir au répertoire racine du projet**
+   ```bash
+   cd ..
+   ```
+
+7. **Importer les données des animaux dans la base de données** :
+   ```bash
+   python manage.py import_animals webui/infos_especes.csv
    ```
 
 ## 🚀 Utilisation
 
 ### Lancer le Serveur
 
-Pour démarrer le serveur de développement, exécutez la commande suivante :
+1. **Accéder au répertoire webui** :
+   ```bash
+   cd webui
+   ```
+2. **Activer l'environnement virtuel** :
 
-```bash
-poetry run manage.py runserver
-```
+   *   **Sous Linux/macOS :**
+        ```bash
+        source venv/bin/activate
+        ```
+   *   **Sous Windows (PowerShell) :**
+        ```powershell
+        .\venv\Scripts\Activate.ps1
+        ```
+   *   **Sous Windows (CMD) :**
+        ```batch
+        .\venv\Scripts\activate.bat
+        ```
+
+3. **Démarrer le serveur de développement :**
+   ```bash
+   py -3.9 manage.py runserver
+   ```
 
 Accédez à l'interface web en ouvrant votre navigateur et en allant à l'adresse `http://127.0.0.1:8000/`.
 
 ## 📂 Structure du Projet
 
-- **Partie IA** : Utilisation de Pandas, NumPy, et Scikit-learn pour le traitement des données et la création du modèle de classification.
+- **Partie IA** : Utilisation de Pandas, NumPy, et TensorFlow pour le traitement des données et la création du modèle de classification.
 - **Partie Web** : Développement de l'interface utilisateur avec Django.
