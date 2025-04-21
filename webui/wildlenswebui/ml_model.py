@@ -1,15 +1,19 @@
 from keras.models import load_model  # TensorFlow is required for Keras to work
 from PIL import Image, ImageOps  # Install pillow instead of PIL
 import numpy as np
+import os
 
 # Disable scientific notation for clarity
 np.set_printoptions(suppress=True)
 
 # Load the model
-model = load_model("D:\devs\wildlens\webui\wildlenswebui\model\keras_model.h5", compile=False)
+
+model_path = os.path.join(os.path.dirname(__file__), "model", "keras_model.h5")
+model = load_model(model_path, compile=False)
 
 # Load the labels
-class_names = open("D:\devs\wildlens\webui\wildlenswebui\model\labels.txt", "r").readlines()
+labels_path = os.path.join(os.path.dirname(__file__), "model", "labels.txt")
+class_names = open(labels_path, "r").readlines()
 
 # # Create the array of the right shape to feed into the keras model
 # # The 'length' or number of images you can put into the array is

@@ -1,3 +1,5 @@
+{% load static %} 
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -9,10 +11,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #2e7d32;
-            --secondary-color: #81c784;
-            --accent-color: #ffb74d;
-            --dark-color: #1b5e20;
+            --primary-color: #31c48d;
+            --secondary-color: #83ebc5;
+            --accent-color: #31c48d;
+            --dark-color: #1d9e6f;
             --light-color: #e8f5e9;
             --text-color: #212121;
             --light-text: #f5f5f5;
@@ -30,7 +32,7 @@
 
         .navbar-brand,
         .nav-link {
-            color: var(--light-text) !important;
+            color: #060c06 !important;
         }
 
         .btn-primary {
@@ -154,7 +156,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="fas fa-paw me-2"></i>WildLens
+                <a class="navbar-brand" href="#">
+                    <img src="{% static 'wildaware-high-resolution-color-logo-crop.png' %}" alt="WildLens Logo" height="30" class="d-inline-block align-top me-2">
+                </a>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -285,24 +289,19 @@
                                 <option value="afrique">Afrique</option>
                                 <option value="australie">Australie</option>
                             </select>
-                            <div class="map-container" id="mapContainer">
-                                <!-- Map will be loaded here -->
-                                <img src="https://via.placeholder.com/600x300?text=Carte+interactive" class="img-fluid"
-                                    alt="Carte interactive">
-                            </div>
-                            <div class="form-check mt-3">
+                            <!-- <div class="form-check mt-3">
                                 <input class="form-check-input" type="checkbox" id="useLocation">
                                 <label class="form-check-label" for="useLocation">
                                     Utiliser ma position actuelle
                                 </label>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
             </div>
             <div class="text-center mt-3">
                 <input type="hidden" name="csrfToken" value="{{ csrf_token }}">
-                <button class="btn btn-primary btn-lg px-4" id="detectButton" disabled>
+                <button class="btn bg-success btn-lg px-4" style="color: white;" id="detectButton" disabled>
                     <i class="fas fa-search me-2"></i>Identifier l'empreinte
                 </button>
             </div>
@@ -338,17 +337,6 @@
                                     <div class="confidence-level" id="confidenceLevel" style="width: 85%;"></div>
                                 </div>
                                 <p id="confidenceText" class="text-end">85%</p>
-                                <h6>Autres possibilités</h6>
-                                <ul class="list-group" id="alternativesList">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Espèce alternative 1
-                                        <span class="badge bg-primary rounded-pill">10%</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Espèce alternative 2
-                                        <span class="badge bg-primary rounded-pill">5%</span>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -358,7 +346,7 @@
                                 <h5 class="mb-0">Informations sur l'espèce</h5>
                             </div>
                             <div class="card-body">
-                                <ul class="nav nav-tabs" id="speciesTabs">
+                                <ul class="nav nav-tabs" id="speciesTabs" style="color: black;">
                                     <li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab"
                                             href="#description">Description</a>
@@ -376,26 +364,9 @@
                                     </div>
                                     <div class="tab-pane fade" id="habitat">
                                         <p id="speciesHabitat">Informations sur l'habitat...</p>
-                                        <div id="distributionMap" class="mt-3">
-                                            <!-- Distribution map will be loaded here -->
-                                            <img src="https://via.placeholder.com/400x200?text=Carte+de+distribution"
-                                                class="img-fluid rounded" alt="Carte de distribution">
-                                        </div>
                                     </div>
                                     <div class="tab-pane fade" id="empreintes">
                                         <p id="trackInfo">Informations sur les empreintes...</p>
-                                        <div class="row mt-3">
-                                            <div class="col-6">
-                                                <img src="https://via.placeholder.com/200?text=Empreinte+avant"
-                                                    class="img-fluid rounded" alt="Empreinte avant">
-                                                <p class="text-center mt-1">Patte avant</p>
-                                            </div>
-                                            <div class="col-6">
-                                                <img src="https://via.placeholder.com/200?text=Empreinte+arrière"
-                                                    class="img-fluid rounded" alt="Empreinte arrière">
-                                                <p class="text-center mt-1">Patte arrière</p>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -417,74 +388,68 @@
                 <!-- Gallery items will be dynamically loaded here -->
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Renard" class="card-img-top"
-                            alt="Empreinte de Renard">
+                        <img src="{% static 'animauxdemo/fox.jpeg' %}" class="card-img-top"
+                            alt="Empreinte de Renard2">
                         <div class="card-body">
                             <h5 class="card-title">Renard</h5>
                             <p class="card-text">Empreinte typique de renard trouvée en forêt</p>
-                            <button class="btn btn-sm btn-outline-primary">Voir détails</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Loup" class="card-img-top"
+                        <img src="{% static 'animauxdemo/wolf.jpg' %}" class="card-img-top"
                             alt="Empreinte de Loup">
                         <div class="card-body">
                             <h5 class="card-title">Loup</h5>
                             <p class="card-text">Empreinte de loup identifiée en montagne</p>
-                            <button class="btn btn-sm btn-outline-primary">Voir détails</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+d'Ours" class="card-img-top"
+                        <img src="{% static 'animauxdemo/ours.jpg' %}" class="card-img-top"
                             alt="Empreinte d'Ours">
                         <div class="card-body">
                             <h5 class="card-title">Ours</h5>
                             <p class="card-text">Empreinte d'ours brun dans une zone forestière</p>
-                            <button class="btn btn-sm btn-outline-primary">Voir détails</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Lynx" class="card-img-top"
+                        <img src="{% static 'animauxdemo/lynx.jpg' %}" class="card-img-top"
                             alt="Empreinte de Lynx">
                         <div class="card-body">
                             <h5 class="card-title">Lynx</h5>
                             <p class="card-text">Empreinte de lynx trouvée en zone montagneuse</p>
-                            <button class="btn btn-sm btn-outline-primary">Voir détails</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Castor" class="card-img-top"
+                        <img src="{% static 'animauxdemo/beaver.jpg' %}" class="card-img-top"
                             alt="Empreinte de Castor">
                         <div class="card-body">
                             <h5 class="card-title">Castor</h5>
                             <p class="card-text">Empreinte de castor près d'un cours d'eau</p>
-                            <button class="btn btn-sm btn-outline-primary">Voir détails</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="card feature-card">
-                        <img src="https://via.placeholder.com/300x200?text=Empreinte+de+Raton+Laveur"
+                        <img src="{% static 'animauxdemo/raccoon.jpg' %}"
                             class="card-img-top" alt="Empreinte de Raton Laveur">
                         <div class="card-body">
                             <h5 class="card-title">Raton Laveur</h5>
                             <p class="card-text">Empreinte caractéristique de raton laveur</p>
-                            <button class="btn btn-sm btn-outline-primary">Voir détails</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="text-center mt-4">
+            <!-- <div class="text-center mt-4">
                 <button class="btn btn-outline-primary">Voir plus d'exemples</button>
-            </div>
+            </div> -->
         </div>
     </section>
 
@@ -497,8 +462,7 @@
             </div>
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0">
-                    <img src="https://via.placeholder.com/600x400?text=WildLens+Project" class="img-fluid rounded"
-                        alt="WildLens Project">
+                    <img src="{% static 'creepeople.png' %}" alt="WildLens" class="w-100">
                 </div>
                 <div class="col-lg-6">
                     <h3>Notre mission</h3>
@@ -528,7 +492,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h5>WildLens</h5>
+                    <a class="navbar-brand" href="#">
+                        <img src="{% static 'wildaware-high-resolution-color-logo-crop.png' %}" alt="WildLens Logo" height="30" class="d-inline-block align-top me-2">
+                    </a>
                     <p>Sensibiliser à la préservation de la faune sauvage grâce à la technologie</p>
                     <div class="social-icons">
                         <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
@@ -705,7 +671,6 @@
             const removeImage = document.getElementById('removeImage');
             const detectButton = document.getElementById('detectButton');
             const regionSelect = document.getElementById('regionSelect');
-            const useLocation = document.getElementById('useLocation');
 
             // Results section
             const loadingSpinner = document.getElementById('loadingSpinner');
@@ -752,20 +717,6 @@
             // Region select handler
             regionSelect.addEventListener('change', function () {
                 checkFormValidity();
-            });
-
-            // Use location handler
-            useLocation.addEventListener('change', function () {
-                if (this.checked) {
-                    // Simulate getting user's location
-                    setTimeout(() => {
-                        regionSelect.value = 'europe';
-                        regionSelect.disabled = true;
-                        checkFormValidity();
-                    }, 1000);
-                } else {
-                    regionSelect.disabled = false;
-                }
             });
 
             // Check if form is valid
