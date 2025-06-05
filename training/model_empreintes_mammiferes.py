@@ -12,6 +12,11 @@ et l'évaluation.
 """
 
 import os
+from itertools import count
+from random import random
+import pydot
+import graphviz
+
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
@@ -24,39 +29,38 @@ from tensorflow.keras.layers import Dense, Dropout, GlobalAveragePooling2D, Inpu
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import yaml
+import sqlite3
+
+from keras.utils.vis_utils import plot_model
 
 # Configuration
-INPUT_SIZE = (224, 224)
-BATCH_SIZE = 16
-EPOCHS = 50
-FINE_TUNING_EPOCHS = 30
-LEARNING_RATE = 0.0001
-FINE_TUNING_LEARNING_RATE = 0.00001
-NUM_CLASSES = 13
-RANDOM_SEED = 42
+hyperparameters = []
+
+def load_config(config_file='config.yaml'):
+    with open(config_file, 'r') as f:
+        return yaml.safe_load(f)
+
 
 # Mapping des espèces
-SPECIES_MAPPING = {
-    0: 'Castor',
-    1: 'Chat',
-    2: 'Chien',
-    3: 'Coyote',
-    4: 'Écureuil',
-    5: 'Lapin',
-    6: 'Rat',
-    7: 'Raton Laveur',
-    8: 'Renard',
-    9: 'Souris',
-    10: 'Belette',
-    11: 'Marmotte',
-    12: 'Moufette'
-}
+SPECIES_MAPPING = {}
+NUM_CLASSES = 0
+
+def load_species_mapping(sql_path):
+
+    conn = sqlite3.connect(sql_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, espece FROM wildlenswebui_animal ORDER BY id ASC")
+    rows = cursor.fetchall()
+    conn.close()
+    return {row[0]: row[1] for row in rows}
+
 
 def create_directories():
     """Crée les répertoires nécessaires pour le projet."""
     os.makedirs('models', exist_ok=True)
     os.makedirs('results', exist_ok=True)
-    os.makedirs('logs', exist_ok=True)
+    os.makedirs('../logs', exist_ok=True)
 
 
 def preprocess_image(image):
@@ -69,12 +73,15 @@ def preprocess_image(image):
     Returns:
         Image prétraitée et normalisée
     """
+
+    global hyperparameters
+
     # Redimensionnement à 224x224 pixels (format d'entrée de MobileNetV2)
     if isinstance(image, str):
         # Si l'entrée est un chemin de fichier
         image = cv2.imread(image)
 
-    resized_img = cv2.resize(image, INPUT_SIZE)
+    resized_img = cv2.resize(image, hyperparameters['INPUT_SIZE'])
 
     # Segmentation pour isoler l'empreinte du fond (optionnel selon la qualité des images)
     # Conversion en niveaux de gris
@@ -130,6 +137,7 @@ def load_dataset(data_dir):
         Générateurs pour l'entraînement, la validation et le test
     """
     print(f"Chargement des données depuis {data_dir}")
+    global hyperparameters
     
     # Création du générateur d'augmentation
     datagen = augmentation_generator()
@@ -137,22 +145,20 @@ def load_dataset(data_dir):
     # Chargement des données d'entraînement et de validation
     train_generator = datagen.flow_from_directory(
         data_dir,
-        target_size=INPUT_SIZE,
-        batch_size=BATCH_SIZE,
+        target_size=hyperparameters['INPUT_SIZE'],
+        batch_size=hyperparameters['BATCH_SIZE'],
         class_mode='categorical',
         subset='training',
         shuffle=True,
-        seed=RANDOM_SEED
     )
     
     validation_generator = datagen.flow_from_directory(
         data_dir,
-        target_size=INPUT_SIZE,
-        batch_size=BATCH_SIZE,
+        target_size=hyperparameters['INPUT_SIZE'],
+        batch_size=hyperparameters['BATCH_SIZE'],
         class_mode='categorical',
         subset='validation',
         shuffle=False,
-        seed=RANDOM_SEED
     )
     
     # Création d'un générateur de test séparé (sans augmentation)
@@ -163,12 +169,11 @@ def load_dataset(data_dir):
     
     test_generator = test_datagen.flow_from_directory(
         data_dir,
-        target_size=INPUT_SIZE,
-        batch_size=BATCH_SIZE,
+        target_size=hyperparameters['INPUT_SIZE'],
+        batch_size=hyperparameters['BATCH_SIZE'],
         class_mode='categorical',
         subset='validation',  # Utiliser le même split que validation
         shuffle=False,
-        seed=RANDOM_SEED
     )
     
     print(f"Classes trouvées: {train_generator.class_indices}")
@@ -186,12 +191,14 @@ def build_model():
         Modèle compilé
     """
     print("Construction du modèle MobileNetV2 avec transfer learning...")
-    
+    global hyperparameters
+    global NUM_CLASSES
+
     # Chargement du modèle MobileNetV2 pré-entraîné sans les couches fully-connected
     base_model = MobileNetV2(
         weights='imagenet',
         include_top=False,
-        input_shape=(INPUT_SIZE[0], INPUT_SIZE[1], 3)
+        input_shape=(hyperparameters['INPUT_SIZE'][0], hyperparameters['INPUT_SIZE'][1], 3)
     )
     
     # Gel des couches convolutives
@@ -209,7 +216,7 @@ def build_model():
     
     # Compilation du modèle
     model.compile(
-        optimizer=Adam(learning_rate=LEARNING_RATE),
+        optimizer=Adam(learning_rate=hyperparameters['LEARNING_RATE']),
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
@@ -231,6 +238,7 @@ def train_model(model, train_generator, validation_generator):
         Modèle entraîné et historiques d'entraînement
     """
     print("Phase 1: Entraînement des couches fully-connected uniquement...")
+    global hyperparameters
     
     # Définition des callbacks
     early_stopping = EarlyStopping(
@@ -254,12 +262,12 @@ def train_model(model, train_generator, validation_generator):
         save_best_only=True,
         verbose=1
     )
-    
+
     # Phase 1: Entraînement des couches fully-connected uniquement
     history = model.fit(
         train_generator,
         validation_data=validation_generator,
-        epochs=EPOCHS,
+        epochs=hyperparameters['EPOCHS'],
         callbacks=[early_stopping, reduce_lr, checkpoint]
     )
     
@@ -275,7 +283,7 @@ def train_model(model, train_generator, validation_generator):
     
     # Recompilation avec un taux d'apprentissage plus faible
     model.compile(
-        optimizer=Adam(learning_rate=FINE_TUNING_LEARNING_RATE),
+        optimizer=Adam(learning_rate=hyperparameters['FINE_TUNING_LEARNING_RATE']),
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
@@ -292,7 +300,7 @@ def train_model(model, train_generator, validation_generator):
     history_fine_tuning = model.fit(
         train_generator,
         validation_data=validation_generator,
-        epochs=FINE_TUNING_EPOCHS,
+        epochs=hyperparameters['FINE_TUNING_EPOCHS'],
         callbacks=[early_stopping, reduce_lr, checkpoint]
     )
     
@@ -316,6 +324,8 @@ def evaluate_model(model, test_generator):
         Dictionnaire contenant les métriques d'évaluation
     """
     print("Évaluation du modèle sur les données de test...")
+
+    global SPECIES_MAPPING
     
     # Réinitialisation du générateur de test
     test_generator.reset()
@@ -336,12 +346,12 @@ def evaluate_model(model, test_generator):
     conf_matrix = confusion_matrix(y_true, y_pred)
     
     # Calcul des métriques par classe
-    precision = precision_score(y_true, y_pred, average=None)
-    recall = recall_score(y_true, y_pred, average=None)
-    f1 = f1_score(y_true, y_pred, average=None)
-    
+    precision = precision_score(y_true, y_pred, average=None, zero_division=0)
+    recall = recall_score(y_true, y_pred, average=None, zero_division=0)
+    f1 = f1_score(y_true, y_pred, average=None, zero_division=0)
+
     # Rapport de classification
-    class_report = classification_report(y_true, y_pred, target_names=list(SPECIES_MAPPING.values()))
+    class_report = classification_report(y_true, y_pred, target_names=list(SPECIES_MAPPING.values()), zero_division=0)
     print("Rapport de classification:")
     print(class_report)
     
@@ -428,6 +438,9 @@ def predict_single_image(model, image_path):
     Returns:
         Dictionnaire contenant les résultats de prédiction
     """
+
+    global SPECIES_MAPPING
+
     # Chargement et prétraitement de l'image
     image = cv2.imread(image_path)
     if image is None:
@@ -467,7 +480,6 @@ def main():
     create_directories()
     
     # Définition du chemin vers les données
-    # Remplacer par le chemin réel vers votre jeu de données
     data_dir = "Animaux_clean/"
     
     # Vérification si le répertoire de données existe
@@ -480,13 +492,40 @@ def main():
         print("├── chien/")
         print("└── ... (autres espèces)")
         return
-    
+
+    global hyperparameters
+    global SPECIES_MAPPING
+    global NUM_CLASSES
+
+    config_data = load_config()
+    hyperparameters = config_data['hyperparameters']
+
+    sql_path = config_data['sql_path']
+
+    SPECIES_MAPPING = load_species_mapping(sql_path)
+    NUM_CLASSES = len(SPECIES_MAPPING)
+
     # Chargement des données
     train_generator, validation_generator, test_generator = load_dataset(data_dir)
     
     # Construction du modèle
     model = build_model()
-    
+
+    # Affichage de l'architecture de neurones
+    # tf.keras.utils.plot_model(model, to_file='./test-image/model.png', show_shapes=True, show_layer_names=False)
+
+    # plot_model(
+    #     model,
+    #     to_file='./test-image/model.png',
+    #     show_shapes=False,
+    #     show_dtype=False,
+    #     show_layer_names=False,
+    #     rankdir='TB',
+    #     expand_nested=False,
+    #     dpi=200,
+    #     show_layer_activations=False
+    # )
+
     # Entraînement du modèle
     model, history, history_fine_tuning = train_model(model, train_generator, validation_generator)
     
@@ -513,9 +552,5 @@ def main():
             print(f"  {pred['species']}: {pred['confidence']:.2f}")
 
 if __name__ == "__main__":
-    # Définition des seeds pour reproductibilité
-    np.random.seed(RANDOM_SEED)
-    tf.random.set_seed(RANDOM_SEED)
-    
     # Exécution de la fonction principale
     main()

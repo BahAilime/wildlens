@@ -69,7 +69,7 @@ def create_directories():
     """Crée les répertoires nécessaires pour le projet."""
     os.makedirs('models', exist_ok=True)
     os.makedirs('results', exist_ok=True)
-    os.makedirs('logs', exist_ok=True)
+    os.makedirs('../logs', exist_ok=True)
 
 
 def load_geographic_data(csv_file):
@@ -716,7 +716,7 @@ def main():
     create_directories()
 
     # Charger les données géographiques
-    geo_data = load_geographic_data('infos_especes_lieu.csv')
+    geo_data = load_geographic_data('../infos_especes_lieu.csv')
 
     # Créer la matrice de présence des espèces par région
     species_region_matrix = create_species_region_matrix(geo_data)
