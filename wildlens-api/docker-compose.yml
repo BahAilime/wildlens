@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=dev_secret_key_change_in_production
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+    command: >-
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --no-input &&
+             gunicorn --bind 0.0.0.0:8000 core.wsgi:application"
+
+volumes:
+  static_volume:
+  media_volume:
