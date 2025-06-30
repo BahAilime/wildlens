@@ -1,0 +1,88 @@
+﻿Django>=4.2.0
+djangorestframework>=3.14.0
+django-cors-headers>=4.3.0
+Pillow>=10.0.0  # Pour ImageField
+python-dotenv>=1.0.0
+django==4.2.20
+django-cors-headers==4.3.0
+django-filter==23.5
+djangochannelsrestframework==1.1.0
+djangocms-admin-style==3.2.6
+djangocms-attributes-field==3.0.0
+djangocms-column==2.0.0
+djangocms-file==3.0.0
+djangocms-googlemap==2.0.0
+djangocms-icon==2.0.0
+djangocms-link==3.1.1
+djangocms-picture==4.0.0
+djangocms-style==3.0.0
+djangocms-text-ckeditor==5.1.4
+djangocms-video==3.0.0
+djangochannelsrestframework==1.1.0
+djangocms-admin-style==3.2.6
+djangocms-attributes-field==3.0.0
+djangocms-column==2.0.0
+djangocms-file==3.0.0
+djangocms-googlemap==2.0.0
+djangocms-icon==2.0.0
+djangocms-link==3.1.1
+djangocms-picture==4.0.0
+djangocms-style==3.0.0
+djangocms-text-ckeditor==5.1.4
+djangocms-video==3.0.0
+djangochannelsrestframework==1.1.0
+djangocms-admin-style==3.2.6
+djangocms-attributes-field==3.0.0
+djangocms-column==2.0.0
+djangocms-file==3.0.0
+djangocms-googlemap==2.0.0
+djangocms-icon==2.0.0
+djangocms-link==3.1.1
+djangocms-picture==4.0.0
+djangocms-style==3.0.0
+djangocms-text-ckeditor==5.1.4
+djangocms-video==3.0.0
+djangochannelsrestframework==1.1.0
+djangocms-admin-style==3.2.6
+djangocms-attributes-field==3.0.0
+djangocms-column==2.0.0
+djangocms-file==3.0.0
+djangocms-googlemap==2.0.0
+djangocms-icon==2.0.0
+djangocms-link==3.1.1
+djangocms-picture==4.0.0
+djangocms-style==3.0.0
+djangocms-text-ckeditor==5.1.4
+djangocms-video==3.0.0
+djangochannelsrestframework==1.1.0
+djangocms-admin-style==3.2.6
+djangocms-attributes-field==3.0.0
+djangocms-column==2.0.0
+djangocms-file==3.0.0
+djangocms-googlemap==2.0.0
+djangocms-icon==2.0.0
+djangocms-link==3.1.1
+djangocms-picture==4.0.0
+djangocms-style==3.0.0
+djangocms-text-ckeditor==5.1.4
+djangocms-video==3.0.0
+djangorestframework==3.14.0
+djoser==2.2.0
+gunicorn==21.2.0
+Markdown==3.5
+numpy==1.26.0
+opencv-python==4.8.1.78
+Pillow==10.1.0
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-django==4.7.0
+python-dateutil==2.8.2
+tensorflow==2.13.0
+
+# Options supplémentaires selon vos besoins :
+drf-yasg>=1.21.0  # Pour la documentation Swagger de l'API
+django-filter>=23.0  # Pour le filtrage avancé des données
+pytest>=7.0.0  # Pour les tests
+pytest-django>=4.5.0  # Pour les tests Django
+black>=23.0.0  # Pour le formatage du code
+flake8>=6.0.0  # Pour le linting
