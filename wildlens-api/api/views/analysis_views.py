@@ -1,5 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from api.models import Animal, Analysis
 from api.serializers import AnalysisSerializer
@@ -18,6 +19,7 @@ from api.ml_model import model, class_names
 class AnalysisViewSet(viewsets.ModelViewSet):
     queryset = Analysis.objects.all()
     serializer_class = AnalysisSerializer
+    permission_classes = [AllowAny]
 
     def save_base64_image(self, base64_data, upload_path='analyses-images/images/'):
         try:
